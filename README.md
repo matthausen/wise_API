@@ -2,14 +2,14 @@ Based on documentation https://api-docs.transferwise.com/#payouts-guide-getting-
 
 Should:
 
-- Use the wise exchange API to monitor once or twice a day the GBPEUR conversion rate
+- Use the wise exchange API to monitor once or twice a day the GBP-EUR conversion rate
 
 - Should check if conversion rate is  more favourable than rate on 2-3-2021 (0.8660)
 
 - Should transfer a variable amount of cash to the destination account
 
 
-Technical reuirements:
+Technical requirements:
 
 - Should run 27/7 and be hosted on AWS or similar
 
