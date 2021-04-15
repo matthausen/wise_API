@@ -43,9 +43,18 @@ func CompareRate() {
 	}
 }
 
+// Quote -> mock function
+func Quote(w http.ResponseWriter, r *http.Request) {
+	quote, err := wise.CreateQuote()
+	if err != nil {
+		fmt.Printf("Error creating a quote: %v", err)
+	}
+	fmt.Println(quote)
+}
+
 func GracefullyShutDown(ctx context.Context) (err error) {
 	mux := http.NewServeMux()
-	//mux.Handle("/", http.HandlerFunc(myFunction))
+	mux.Handle("/quote", http.HandlerFunc(Quote))
 
 	CompareRate()
 

@@ -27,3 +27,4 @@ And run:
 1. Should check different scenarios for favourable exchange rate: e.g. 0% better to 5% or better
 2. Should have a basic UI
 3. Should take user input to confirm a money transfer
+4. Should have test
