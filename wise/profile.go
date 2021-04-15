@@ -2,20 +2,19 @@ package wise
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
-	"os"
 	"net/http"
+	"os"
 
-	"github.com/matthausen/wise_api/models"
 	"github.com/joho/godotenv"
+	"github.com/matthausen/wise_api/models"
 )
 
 func goDotEnvVariable(key string) string {
-  if err := godotenv.Load(".env"); err != nil {
+	if err := godotenv.Load(".env"); err != nil {
 		log.Fatalf("Error loading .env file")
 	}
-  return os.Getenv(key)
+	return os.Getenv(key)
 }
 
 // ProfileInfo - fetch info about the profile
@@ -24,7 +23,7 @@ func ProfileInfo() (models.Profiles, error) {
 	token := goDotEnvVariable("TOKEN")
 
 	req, err := http.NewRequest("GET", profileEndpoint, nil)
-	req.Header.Add("Authorization", "Bearer " + token)
+	req.Header.Add("Authorization", "Bearer "+token)
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
@@ -38,8 +37,6 @@ func ProfileInfo() (models.Profiles, error) {
 	if err := json.NewDecoder(resp.Body).Decode(&profileInfo); err != nil {
 		log.Printf("Could not decode body of response: %v", err)
 	}
-
-	fmt.Println(profileInfo)
 
 	return profileInfo, nil
 }

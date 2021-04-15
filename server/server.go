@@ -18,12 +18,19 @@ func GracefullyShutDown(ctx context.Context) (err error) {
 	mux := http.NewServeMux()
 	mux.Handle("/", http.HandlerFunc(myFunction))
 
-	// Go routine and channel should check the GBP-EUR ratio twice a day
+	// Fetch the profile info
 	profileInfo, err := wise.ProfileInfo()
 	if err != nil {
-		fmt.Printf("Error: %v", err)
+		fmt.Printf("Error fetching profile info: %v", err)
 	}
 	fmt.Println(profileInfo)
+
+	// Get a quote given source and target value
+	quote, err := wise.CreateQuote()
+	if err != nil {
+		fmt.Printf("Error creating a quote: %v", err)
+	}
+	fmt.Println(quote)
 
 	srv := &http.Server{
 		Addr:    ":8080",
