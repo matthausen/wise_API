@@ -10,7 +10,7 @@ import (
 	"github.com/matthausen/wise_api/models"
 )
 
-func goDotEnvVariable(key string) string {
+func GoDotEnvVariable(key string) string {
 	if err := godotenv.Load(".env"); err != nil {
 		log.Fatalf("Error loading .env file")
 	}
@@ -19,8 +19,8 @@ func goDotEnvVariable(key string) string {
 
 // ProfileInfo - fetch info about the profile
 func ProfileInfo() (models.Profiles, error) {
-	profileEndpoint := goDotEnvVariable("WISE_API_PROFILE")
-	token := goDotEnvVariable("TOKEN")
+	profileEndpoint := GoDotEnvVariable("WISE_API_PROFILE")
+	token := GoDotEnvVariable("TOKEN")
 
 	req, err := http.NewRequest("GET", profileEndpoint, nil)
 	req.Header.Add("Authorization", "Bearer "+token)

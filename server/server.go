@@ -5,20 +5,14 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/matthausen/wise_api/wise"
 )
 
-func myFunction(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Hello, World!")
-}
-
-func GracefullyShutDown(ctx context.Context) (err error) {
-	mux := http.NewServeMux()
-	mux.Handle("/", http.HandlerFunc(myFunction))
-
-	// Fetch the profile info
+func CompareRate() {
+	// Fetch profile info
 	profileInfo, err := wise.ProfileInfo()
 	if err != nil {
 		fmt.Printf("Error fetching profile info: %v", err)
@@ -26,11 +20,34 @@ func GracefullyShutDown(ctx context.Context) (err error) {
 	fmt.Println(profileInfo)
 
 	// Get a quote given source and target value
-	quote, err := wise.CreateQuote()
+	baseRate := GoDotEnvVariable("BASE_RATE")
+	value, err := strconv.ParseFloat(baseRate, 32)
+
 	if err != nil {
-		fmt.Printf("Error creating a quote: %v", err)
+		fmt.Println("Error retreiving the base rate for comparison")
 	}
-	fmt.Println(quote)
+
+	for {
+		quote, err := wise.CreateQuote()
+		if err != nil {
+			fmt.Printf("Error creating a quote: %v", err)
+		}
+
+		if quote.Rate > float32(value) {
+			fmt.Printf("Rate: %v is good to transfer\n", quote.Rate)
+			Notify(quote.Rate) // Send email to notify
+		} else {
+			fmt.Printf("Daily rate is: %v - not so good to transfer today\n", quote.Rate)
+		}
+		time.Sleep(12 * time.Hour)
+	}
+}
+
+func GracefullyShutDown(ctx context.Context) (err error) {
+	mux := http.NewServeMux()
+	//mux.Handle("/", http.HandlerFunc(myFunction))
+
+	CompareRate()
 
 	srv := &http.Server{
 		Addr:    ":8080",

@@ -3,7 +3,6 @@ package wise
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 
@@ -12,8 +11,8 @@ import (
 
 // CreateQuote - create a quote given a source and target currency
 func CreateQuote() (models.QuoteResponse, error) {
-	quoteEndpoint := goDotEnvVariable("WISE_API_QUOTE")
-	token := goDotEnvVariable("TOKEN")
+	quoteEndpoint := GoDotEnvVariable("WISE_API_QUOTE")
+	token := GoDotEnvVariable("TOKEN")
 
 	quoteRequest, err := json.Marshal(models.QuoteRequest{
 		SourceCurrency: "GBP",
@@ -42,8 +41,6 @@ func CreateQuote() (models.QuoteResponse, error) {
 	if err := json.NewDecoder(resp.Body).Decode(&quoteResponse); err != nil {
 		log.Printf("Could not decode body of response: %v", err)
 	}
-
-	fmt.Println(quoteResponse)
 
 	return quoteResponse, nil
 }
