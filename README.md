@@ -1,20 +1,29 @@
+## WISE API
+
+This app is using the Wise (ex TransferWise) API to monitor exchange rate between currency and notify the user about a favourable exchange rate.
+The exchange rate is compared every 12h.
 Based on documentation https://api-docs.transferwise.com/#payouts-guide-getting-started
 
-Should:
 
-- Use the wise exchange API to monitor once or twice a day the GBP-EUR conversion rate
+## Requirements
 
-- Should check if conversion rate is  more favourable than rate on 2-3-2021 (£0.8660) (€1.1546)
+You should create a .env file in the root directory with your credentials:
 
-- Should transfer a variable amount of cash to the destination account
+- A Wise Token for authentication
+- Your email address and password to enable notifications
+- The endpoint to fetch your profile information and quotes. These can be from the sanbox environment or from the prod environment
 
+### How to run:
 
-Technical requirements:
+Build with docker:
 
-- Should run 27/7 and be hosted on AWS or similar
+- `docker build -t wise .`
 
-- Should be a chron job
+And run:
 
-- Should be container 
+- `docker run -p 8080:8080 -i -t wise`
 
-- Should not share any credentials publicly
+### TODO
+1. Should check different scenarios for favourable exchange rate: e.g. 0% better to 5% or better
+2. Should have a basic UI
+3. Should take user input to confirm a money transfer

@@ -20,7 +20,7 @@ func CompareRate() {
 	fmt.Println(profileInfo)
 
 	// Get a quote given source and target value
-	baseRate := GoDotEnvVariable("BASE_RATE")
+	baseRate := GoDotEnvVariable("BASE_RATE_GBP_EUR")
 	value, err := strconv.ParseFloat(baseRate, 32)
 
 	if err != nil {
