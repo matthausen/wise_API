@@ -6,6 +6,8 @@ import (
 	"log"
 	"net/http"
 	"time"
+
+	"github.com/matthausen/wise_api/wise"
 )
 
 func myFunction(w http.ResponseWriter, r *http.Request) {
@@ -15,6 +17,13 @@ func myFunction(w http.ResponseWriter, r *http.Request) {
 func GracefullyShutDown(ctx context.Context) (err error) {
 	mux := http.NewServeMux()
 	mux.Handle("/", http.HandlerFunc(myFunction))
+
+	// Go routine and channel should check the GBP-EUR ratio twice a day
+	profileInfo, err := wise.ProfileInfo()
+	if err != nil {
+		fmt.Printf("Error: %v", err)
+	}
+	fmt.Println(profileInfo)
 
 	srv := &http.Server{
 		Addr:    ":8080",
